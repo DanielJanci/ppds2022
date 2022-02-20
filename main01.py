@@ -6,7 +6,8 @@ class Shared:
     def __init__(self, size):
         self.counter = 0
         self.end = size
-        # due to experiments, 10 is added to size so "out of index" exception is solved temporarily
+        # due to experiments, 10 is added to size so "out of index"
+        # exception is solved temporarily
         self.elms = [0] * (size + 10)
 
 
