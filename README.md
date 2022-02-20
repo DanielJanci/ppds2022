@@ -5,7 +5,7 @@ which is passed as a parameter and an array with
 elements of value 0 and the size from parameter. It 
 also contains a do_count function with parameter 
 of type Shared. The function increments an element 
-of an array in Shared by one and then increments a
+of an array in Shared by one and then increments an
 index of that array by one. 
 
 The code is run paralelly with two threads which 
@@ -24,6 +24,18 @@ by one, 108144 elements had been incremented by 2 and
 
 Experiments were run in Python 3.8.
 
+
+Code in main01.py contains first implementation of
+Mutex.lock() function. Lock is put inside the funtion
+do_count right before incrementing value of an element.
+And unlock is put right after the incrementation. This
+causes that when incrementing the value, only one thread
+has access to the index of the array. Thus the value 
+is incremented only once. The following output is after 
+this implementation of the lock: [(1, 1000001), (0, 9)].
+We can see that 1 000 000 values have been incremented correctly.
+The last 10 values come from updating the size value
+in class Shared for avoiding an out of index exception.
 
 
 
