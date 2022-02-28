@@ -2,6 +2,11 @@ from fei.ppds import Thread, Mutex, Event, print
 
 
 class SimpleBarrier:
+    """This class contains variables N which represents the number of threads, C is a counter with default value of 0,
+    M is a instance of Mutex and T is an instance of Event. Class contains one function called wait.
+    :parameter N: the number of threads
+
+    """
     def __init__(self, N):
         self.N = N
         self.C = 0
@@ -9,6 +14,10 @@ class SimpleBarrier:
         self.T = Event()
 
     def wait(self):
+        """Counts how many threads finished their task and Event.wait() "holds" them. If the count is N an
+        Event.Signal() a signal to "release" the threads. Lastly, clear() "resets" the Event() for further usage.
+        :return: None
+        """
         self.M.lock()
         self.C += 1
         if self.C == self.N:
@@ -20,14 +29,31 @@ class SimpleBarrier:
 
 
 def before_barrier(thread_id):
+    """Prints identificators of threads that are being "held" before an event sends a signal.
+
+    :param thread_id: indentificator of thread
+    :return: None
+    """
     print(f"before barrier {thread_id}")
 
 
 def after_barrier(thread_id):
+    """Prints identificators of threads that are being "released" after an event sends a signal.
+
+    :param thread_id: indentificator of thread
+    :return: None
+    """
     print(f"after barrier {thread_id}")
 
 
 def barrier_cycle(b1, b2, thread_id):
+    """Prints identificators of threads that are before and after barrier in a never-ending cycle.
+
+    :param b1: instance of SimpleBarrier
+    :param b2: instance of SimpleBarrier
+    :param thread_id: indentificator of thread
+    :return: None
+    """
     while True:
         before_barrier(thread_id)
         b1.wait()
