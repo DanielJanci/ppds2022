@@ -4,8 +4,7 @@ from time import sleep
 
 
 class Adt:
-    def __init__(self, N):
-        self.N = N
+    def __init__(self):
         self.counter = 0
         self.S = Semaphore()
 
@@ -29,7 +28,7 @@ THREADS = 10
 fib_seq = [0] * (THREADS + 2)
 fib_seq[1] = 1
 
-adt = Adt(THREADS)
+adt = Adt()
 threads = [Thread(compute_fibonacci, adt, i) for i in range(THREADS)]
 [t.join() for t in threads]
 
