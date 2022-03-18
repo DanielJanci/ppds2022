@@ -2,8 +2,9 @@ from time import sleep
 from random import randint
 from fei.ppds import Thread, Mutex, Semaphore, print
 
-N = 10
-M = 3
+S = 10
+C = 5
+M = 7
 
 
 class SimpleBarrier:
@@ -13,7 +14,7 @@ class SimpleBarrier:
         self.mutex = Mutex()
         self.barrier = Semaphore(0)
 
-    def wait(self, each=None, last=None):
+    def wait(self, shared, each=None, last=None):
         self.mutex.lock()
         self.count += 1
         if each:
@@ -22,6 +23,8 @@ class SimpleBarrier:
             if last:
                 print(last)
             self.count = 0
+            shared.servings = M
+            shared.full_pot.signal()
             self.barrier.signal(self.n)
         self.mutex.unlock()
         self.barrier.wait()
@@ -31,49 +34,47 @@ class Shared:
     def __init__(self, m):
         self.servings = m
         self.mutex = Mutex()
-        self.empty_pot = Semaphore(0)
         self.full_pot = Semaphore(0)
-        self.b1 = SimpleBarrier(N)
-        self.b2 = SimpleBarrier(N)
+        self.empty_pot = Semaphore(0)
+        self.barrier = SimpleBarrier(C)
 
 
-def eat():
-    # print(f'savage {i}: eat start')
+def eating():
     sleep(randint(20, 50) / 100)
-    # print(f'savage {i}: eat end')
+
+
+def cooking():
+    sleep(randint(50, 200) / 100)
 
 
 def savage(i, shared):
     sleep(randint(1, 100) / 100)
     while True:
-        shared.b1.wait()
-        shared.b2.wait(each=f'savage {i}: before dinner', last=f'savage {i}: everyone is done eating')
         shared.mutex.lock()
         if shared.servings == 0:
-            shared.empty_pot.signal()
+            print(f'savage {i} wakes up cooks')
+            shared.empty_pot.signal(C)
             shared.full_pot.wait()
-        print(f'savage {i}: take from pot')
+        eating()
+        print(f'savage {i} eats')
         shared.servings -= 1
         shared.mutex.unlock()
-        eat()
 
 
-def cook(shared):
+def cook(i, shared):
     while True:
         shared.empty_pot.wait()
-        print(f'cook: cooking')
-        sleep(randint(50, 200) / 100)
-        print(f'cook: {M} servings --> pot')
-        shared.servings += M
-        shared.full_pot.signal()
+        cooking()
+        shared.barrier.wait(shared, each=f'cook {i}: is cooking', last=f'cook {i}: dinner is ready')
 
 
 def main():
     shared = Shared(0)
     threads = []
-    for i in range(N):
+    for i in range(S):
         threads.append(Thread(savage, i, shared))
-    threads.append(Thread(cook, shared))
+    for j in range(C):
+        threads.append(Thread(cook, j, shared))
 
     for t in threads:
         t.join()
