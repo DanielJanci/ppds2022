@@ -31,6 +31,7 @@ C is the number of cooks
 M is the number of servings
 count = 0
 
+while True
 begin
     lock thread for i from savages
     if servings != 0
@@ -48,6 +49,7 @@ begin
     unlock thread i from savages
 end
 
+while True
 begin 
     wait for signal from savages
     simulate cooking
@@ -66,4 +68,5 @@ begin
         unlock thread for i from cooks
         cooks wait at barrier
     end
+end    
 ```
