@@ -2,7 +2,9 @@
 File main.py implements a modification of a problem of savages from: 
 https://uim.fei.stuba.sk/i-ppds/5-cvicenie-problem-fajciarov-problem-divochov-%f0%9f%9a%ac/
 
-
+In this modification we need to solve signalizing cooks after savages ate all the servings and signalize savages when cooks 
+finished cooking all the servings. Before signalizing the savages we will need to use barrier to collect cooks and the
+last cook entering barrier will signalize savages that the dinner is ready.
 
 File contains two classes. First class is called Shared, and it contains variables: servings with value from parameter m, 
 mutex is an instance of Mutex, full_pot and empty_pot is an instance of Semaphore, barrier is an instance of SimpleBarrier
