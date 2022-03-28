@@ -9,6 +9,7 @@ The customer after getting the haircut frees a place in the waiting room and ano
 Mine implementation of this problem doesn't use FIFO queue, thus customers can cut the waiting line.
 
 File main.py contains:
+
 Class Shared that contains variables: roomCapacity with value from parameter n, customers with default value 0, room is an empty 
 array. Variables: customer, barber, customerDone, barberDone are instances of Semaphore and mutex is an instance of
 Mutex. Variable room holds indetificators of customers inside the waiting room, it's only used for printing.
@@ -17,7 +18,7 @@ Function customer collects customers in a waiting room. If a customer comes to t
 is incremented and his identificator is put to an array. If the number of customers is equal to the capacity of
 the room, no more customers can come in. Function gives signal to the barber that he is ready to recieve a haircut
 and waits until he is done. Then the number of customers is decremented and customers' id is removed from the 
-array. Which means that another customer can come to the waiting room. Function prints the current state of the
+array. This means that another customer can come to the waiting room. Function prints the current state of the
 waiting room when a customer comes in, leaves or when the waiting room is full.
 
 Function barber waits for customer' signal and then proceeds to make a haircut for him. After that he signals the
