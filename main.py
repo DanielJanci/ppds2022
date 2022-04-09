@@ -1,6 +1,6 @@
 """
 Author: Daniel Janci
-Program creates runs multiple tasks until one of them yields for the last time.
+Program creates and runs multiple generators until one of them yields for the last time.
 """
 from time import sleep
 
