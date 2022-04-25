@@ -1,7 +1,6 @@
 # Homework 9
-File main.py contains program that uses coda calculations to create a transposed matrix.
+File main.py contains program that uses cuda calculations to create a transposed matrix.
 
---- 
 
 Functions:
 
